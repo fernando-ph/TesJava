@@ -48,11 +48,6 @@ services:
       - simpanbuku-net
     restart: on-failure
 
-# ----------------------------------------------------------
-# VOLUMES — Data persisten di luar container lifecycle
-# ----------------------------------------------------------
-: # file upload
-
 
   simpanbuku-net:
     driver: bridge
