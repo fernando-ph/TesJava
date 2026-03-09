@@ -29,12 +29,10 @@ class SimpanBukuApplicationTests {
 private BukuService bukuService;
   @Autowired
 private BukuRepository bukuRepository;
-  // ================================================================
-// SETUP â€” Buat data buku sebelum setiap test
-// ================================================================
+ 
   @BeforeEach    void setUp() {
 bukuRepository.deleteAll();
-// Buku 1
+
 Buku b1 = new Buku();
 b1.setJudul("Laskar Pelangi");
 b1.setPenulis("Andrea Hirata");
@@ -44,7 +42,6 @@ b1.setHarga(85000.0);
 b1.setStok(10);
 b1.setTanggalMasuk(LocalDate.now());
 b1.setTersedia(true);
-// Buku 2
 Buku b2 = new Buku();
 b2.setJudul("Bumi Manusia");
 b2.setPenulis("Pramoedya Ananta Toer");
@@ -80,7 +77,6 @@ bukuRepository.saveAll(List.of(b1, b2, b3, b4));
   @Test
 @DisplayName("Spring IoC: Context berhasil di-load dan semua Bean ter-inject")
 void contextLoads() {
-// Jika test ini pass â†’ Spring IoC berhasil inject semua dependency
 assertThat(bukuService).isNotNull();
 assertThat(bukuRepository).isNotNull();
 }
@@ -150,6 +146,7 @@ assertThat(novelStats.getHargaMax()).isEqualTo(95000.0);
 @Test
 @DisplayName("Native SQL @Modifying: tambahStok() mengupdate stok dengan benar")
 void testTambahStok() {
+
 Buku laskarPelangi = bukuRepository.findAll().stream()
 .filter(b -> b.getJudul().equals("Laskar Pelangi"))
 .findFirst().orElseThrow();
