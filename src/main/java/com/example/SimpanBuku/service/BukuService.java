@@ -92,17 +92,7 @@ public class BukuService {
         bukuRepository.deleteById(id);
     }
 
-    // ================================================================
-    // JAVA STREAM — Pengolahan Data
-    // ================================================================
-
-    /**
-     * Stream #1: Ambil semua buku dan transform ke BukuResponse
-     * Operasi: map (transform) → collect
-     *
-     * Stream Pipeline:
-     *   List<Buku> → [map ke BukuResponse] → List<BukuResponse>
-     */
+   
     public List<BukuResponse> getAllBuku() {
         return bukuRepository.findAll()
                 .stream()
@@ -110,13 +100,6 @@ public class BukuService {
                 .collect(Collectors.toList());  // terminal: kumpulkan hasil
     }
 
-    /**
-     * Stream #2: Filter buku tersedia dan urutkan berdasarkan harga
-     * Operasi: filter → sorted → map → collect
-     *
-     * Stream Pipeline:
-     *   List<Buku> → [filter tersedia] → [sorted by harga] → [map] → List<BukuResponse>
-     */
     public List<BukuResponse> getBukuTersediaSortedByHarga() {
         return bukuRepository.findAll()
                 .stream()
@@ -126,13 +109,7 @@ public class BukuService {
                 .collect(Collectors.toList());                             // terminal
     }
 
-    /**
-     * Stream #3: Kelompokkan buku berdasarkan genre
-     * Operasi: collect dengan Collectors.groupingBy
-     *
-     * Stream Pipeline:
-     *   List<Buku> → [groupingBy genre] → Map<String, List<BukuResponse>>
-     */
+   
     public Map<String, List<BukuResponse>> getBukuGroupByGenre() {
         return bukuRepository.findAll()
                 .stream()
@@ -143,13 +120,7 @@ public class BukuService {
                 ));
     }
 
-    /**
-     * Stream #4: Hitung total nilai stok (harga × stok) per genre
-     * Operasi: filter → collect groupingBy dengan summingDouble
-     *
-     * Stream Pipeline:
-     *   List<Buku> → [filter tersedia] → [group by genre, sum nilai] → Map<String, Double>
-     */
+ 
     public Map<String, Double> getNilaiStokPerGenre() {
         return bukuRepository.findAll()
                 .stream()
@@ -162,10 +133,7 @@ public class BukuService {
                 ));
     }
 
-    /**
-     * Stream #5: Cari buku via Native SQL, lalu proses hasilnya dengan Stream
-     * Gabungan Native SQL Query + Java Stream
-     */
+   
     public List<BukuResponse> cariBuku(String keyword) {
         return bukuRepository.cariByJudulAtauPenulis(keyword) // Native SQL
                 .stream()
@@ -211,9 +179,7 @@ public class BukuService {
                 .collect(Collectors.toList()); // terminal
     }
 
-    /**
-     * Stream #7: Tambah stok via Native SQL, lalu kembalikan summary
-     */
+    
     public BukuResponse tambahStok(Long id, Integer jumlah) {
         int updated = bukuRepository.tambahStok(id, jumlah); // Native SQL @Modifying
         if (updated == 0) {
@@ -225,15 +191,7 @@ public class BukuService {
         return toResponse(bukuRepository.save(buku));
     }
 
-    // ================================================================
-    // HELPER — Mapper Entity → DTO
-    // ================================================================
-
-    /**
-     * Mapper Buku → BukuResponse
-     * Menambahkan field "statusStok" yang dihitung dari data Entity
-     * (contoh pengolahan data ringan di Java sebelum dikirim ke client)
-     */
+    
     private BukuResponse toResponse(Buku buku) {
         BukuResponse response = new BukuResponse();
         response.setId(buku.getId());

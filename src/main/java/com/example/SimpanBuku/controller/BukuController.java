@@ -21,7 +21,7 @@ public class BukuController {
     public BukuController(BukuService bukuService) {
         this.bukuService = bukuService;
     }
-=============================================
+
 
     @PostMapping
     public ResponseEntity<BukuResponse> tambahBuku(@Valid @RequestBody BukuRequest request) {
@@ -68,39 +68,25 @@ public class BukuController {
         return ResponseEntity.ok(bukuService.getBukuGroupByGenre());
     }
 
-    /**
-     * GET /api/buku/nilai-stok — Total nilai stok per genre
-     * Service: Stream filter → groupingBy → summingDouble
-     */
+   
     @GetMapping("/nilai-stok")
     public ResponseEntity<Map<String, Double>> getNilaiStok() {
         return ResponseEntity.ok(bukuService.getNilaiStokPerGenre());
     }
 
-    /**
-     * GET /api/buku/cari?keyword=xxx — Cari buku
-     * Repository: Native SQL LIKE
-     * Service: Stream sort → collect
-     */
+   
     @GetMapping("/cari")
     public ResponseEntity<List<BukuResponse>> cariBuku(@RequestParam String keyword) {
         return ResponseEntity.ok(bukuService.cariBuku(keyword));
     }
 
-    /**
-     * GET /api/buku/statistik — Statistik per genre
-     * Repository: Native SQL GROUP BY + agregasi
-     * Service: Stream map (Object[] → DTO) → collect
-     */
+   
     @GetMapping("/statistik")
     public ResponseEntity<List<StatistikGenreResponse>> getStatistik() {
         return ResponseEntity.ok(bukuService.getStatistikGenre());
     }
 
-    /**
-     * PATCH /api/buku/{id}/stok?tambah=N — Tambah stok
-     * Repository: Native SQL @Modifying UPDATE
-     */
+  
     @PatchMapping("/{id}/stok")
     public ResponseEntity<BukuResponse> tambahStok(
             @PathVariable Long id,
